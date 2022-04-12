@@ -96,7 +96,7 @@ plugin "beancount_periodic.depreciate"
 2022-03-31 * "Tesla" "Model X"
   Liababilies:CreditCard:0001    -200000 USD
   Assets:Car:ModelX
-    depreciate: "5 Year /Yearly 120000"
+    depreciate: "5 Year /Yearly =80000"
 ```
 
 Then this plugin will transform the transaction into:
@@ -122,4 +122,54 @@ Then this plugin will transform the transaction into:
   Expenses:Depreciation:Car:ModelX
 ```
 
-At last, the balance of the account `Assets:Car:ModelX` is 80000 USD (200000 - 120000).
+At last, the balance of the account `Assets:Car:ModelX` is 80000 USD.
+
+### Config string in meta
+
+All cycle settings follow the same rules. These are some full examples:
+
+```
+"200000- 5 Years @2022-03-31 /Yearly *line =80000"
+```
+
+#### Total value
+
+`200000-` means that the total value is `200000`.
+
+#### Duration & Start date
+
+`5 Years` means the duration is 5 years, and `@2022-03-31` means the first transformed transaction will start at 2022-03-31.
+
+`5 Years @2022-03-31` is same as `@2022-03-31~2027-03-30`. You can also use `Day` and others.
+
+```
+"6 Months @2022-03-31"
+"6 M @2022-03-31"
+"5 Y @2022-03-31"
+```
+
+And the start date is optional, using the entry date as default value if missing. 
+
+```
+"6 Months"
+```
+
+The default value of duration is 1 month if missing.
+
+#### Step
+
+`Yearly` means one transformed transaction per year. You can also use `Daily`, `Monthly`, `Day` and others.
+
+The default value of step is 1 day if missing.
+
+#### Formula(not yet implemented)
+
+`*line` means that the formula is `line`. You can also use `linear`, `straight`, `line`, `load`, `work-load`, `accelerated-sum`, `sum`, `accelerated-declining`.
+
+The default value of formula is `line`.
+
+#### Salvage value
+
+`=80000` means that the salvage value is 80000.
+
+The default value of salvage value is 0 if missing.
