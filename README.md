@@ -105,7 +105,7 @@ Then this plugin will transform the transaction into:
 2022-03-31 * "Tesla" "Model X"
   Liababilies:CreditCard:0001    -200000 USD
   Assets:Car:ModelX
-    depreciate: "5 Year /Yearly 120000"
+    depreciate: "5 Year /Yearly =80000"
   
 
 2022-03-31 * "Tesla" "Model X Depreciated(1/5)"
