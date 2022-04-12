@@ -168,6 +168,42 @@ The default value of duration is 1 month if missing.
 
 `Yearly` means one transformed transaction per year. You can also use `Daily`, `Monthly`, `Day` and others.
 
+If step string ends with `!` means that the amount of every step will be calculated with real days. For example:
+
+```beancount
+2022-01-01 *
+  Liababilies:CreditCard:0001    -365 USD
+  Expenses:BlaBla
+    amortize: "1 Year /Monthly!"
+```
+
+Then this plugin will transform the transaction into:
+
+```beancount
+2022-01-01 *
+  Liababilies:CreditCard:0001    -365 USD
+  Expenses:BlaBla
+    amortize: "1 Year /Monthly!"
+
+2022-01-01 * "Amortized(1/12)"
+  Equity:Amortization:BlaBla    -31 USD
+  Expenses:BlaBla
+
+2022-02-01 * "Amortized(2/12)"
+  Equity:Amortization:BlaBla    -28 USD
+  Expenses:BlaBla
+
+2022-03-01 * "Amortized(3/12)"
+  Equity:Amortization:BlaBla    -31 USD
+  Expenses:BlaBla
+
+;...
+
+2022-12-01 * "Amortized(12/12)"
+  Equity:Amortization:BlaBla    -31 USD
+  Expenses:BlaBla
+```
+
 The default value of step is 1 day if missing.
 
 #### Formula(not yet implemented)
