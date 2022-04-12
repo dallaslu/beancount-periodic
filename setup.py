@@ -18,7 +18,7 @@ setup(
     },
     author='Dallas Lu',
     author_email='914202+dallaslu@users.noreply.github.com',
-    description='Beancount plugin to generate periodic transactions',
+    description='Beancount plugin to generate periodic transactions #Amortize #Depreciate #Recur',
     long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
     packages=find_packages(),
