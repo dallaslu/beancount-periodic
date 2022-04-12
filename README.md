@@ -126,15 +126,23 @@ At last, the balance of the account `Assets:Car:ModelX` is 80000 USD.
 
 ### Config string in meta
 
-All cycle settings follow the same rules. These are some full examples:
+All settings follow the same rules. These are some examples:
 
 ```
 "200000- 5 Years @2022-03-31 /Yearly *line =80000"
+"200000- @2022-03-31~2027-03-30 /Year *line =80000"
+"200000 - 5 Year @2022-03-31 /1 Year *line =80000"
+"200000 - 5 Y @2022-03-31 /12 Months =80000"
+"5Y @ 2022-03-31 / 12M = 80000"
+"5Y / 12M =80000"
+"5Y / 12M"
 ```
 
 #### Total value
 
 `200000-` means that the total value is `200000`.
+
+The default value of total is same as the account of posting if missing.
 
 #### Duration & Start date
 
