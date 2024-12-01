@@ -124,6 +124,25 @@ Then this plugin will transform the transaction into:
 
 At last, the balance of the account `Assets:Car:ModelX` is 80000 USD.
 
+To change the depreciation expense account, add the `depreciate_account` meta to the `open` statement of the depreciated asset account:
+```beancount
+1900-01-01 open Assets:Car:ModelX  EUR
+  depreciate_account: "Expenses:Car:Value"
+
+2022-03-31 * "Tesla" "Model X"
+  Liababilies:CreditCard:0001    -200000 USD
+  Assets:Car:ModelX
+    depreciate: "5 Year /Yearly =80000"
+
+
+; generated transation
+2022-03-31 * "Tesla" "Model X Depreciated(1/5)"
+  Assets:Car:ModelX    -24000 USD
+  Expenses:Car:Value
+
+; ...
+```
+
 ### Config string in meta
 
 All settings follow the same rules. These are some examples:
