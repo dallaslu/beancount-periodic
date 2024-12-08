@@ -1,6 +1,7 @@
 from beancount.core import data, account, account_types
 from beancount.parser import options
 
+from .common.config import PluginConfig
 from .common.utils import build_steps
 from .common.utils import create_meta
 from .common.utils import select_periodic_posting_groups
@@ -9,6 +10,7 @@ __plugins__ = ('amortize',)
 
 
 def amortize(entries: data.Entries, unused_options_map, config_string=""):
+    plugin_config = PluginConfig.from_string(config_string)
     new_entries = []
     errors = []
     account_types_option = options.get_account_types(unused_options_map)
@@ -49,7 +51,7 @@ def amortize(entries: data.Entries, unused_options_map, config_string=""):
 
                 new_entries.extend(
                     build_steps('amortize', entry, new_postings_config, positive=True,
-                                narration_suffix='Amortized(%d/%d)'))
+                                narration_suffix='Amortized(%d/%d)', generate_until=plugin_config.generate_until))
 
             postings_to_insert_original_entry.reverse()
             for i, element in postings_to_insert_original_entry:
