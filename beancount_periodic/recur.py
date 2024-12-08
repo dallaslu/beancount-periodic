@@ -6,13 +6,13 @@ from beancount.parser import options
 
 from .common.utils import create_meta
 from .common.utils import create_step_entry
-from .common.config import parse
-
+from .common.config import parse, PluginConfig
 
 __plugins__ = ('recur',)
 
 
 def recur(entries: data.Entries, unused_options_map, config_string=""):
+    plugin_config = PluginConfig.from_string(config_string)
     new_entries = []
     errors = []
     account_types_option = options.get_account_types(unused_options_map)
@@ -29,6 +29,10 @@ def recur(entries: data.Entries, unused_options_map, config_string=""):
                     new_entry_narration_template = (entry.narration + ' ' if entry.narration else '') + 'Recurring(%d/%d)'
                     
                     for step_i, (step_days, step_ratio) in enumerate(entry_config.steps):
+                        # skip all steps that are past the given date
+                        if plugin_config.generate_until and start_date > plugin_config.generate_until:
+                            break
+
                         new_entry_narration = new_entry_narration_template % (step_i + 1, len(entry_config.steps))
                         end_date = start_date + datetime.timedelta(days=step_days)
 

@@ -4,6 +4,7 @@ import beancount.core.getters
 from beancount.core import data, account, account_types
 from beancount.parser import options
 
+from .common.config import PluginConfig
 from .common.utils import build_steps
 from .common.utils import select_periodic_posting_groups
 
@@ -31,6 +32,7 @@ def get_depreciation_account(
 
 
 def depreciate(entries: data.Entries, unused_options_map, config_string=""):
+    plugin_config = PluginConfig.from_string(config_string)
     new_entries = []
     errors = []
     account_types_option = options.get_account_types(unused_options_map)
@@ -55,7 +57,8 @@ def depreciate(entries: data.Entries, unused_options_map, config_string=""):
                 new_entries.extend(
                     build_steps('depreciate', entry, new_postings_config,
                                 positive=False,
-                                narration_suffix='Depreciated(%d/%d)'))
+                                narration_suffix='Depreciated(%d/%d)',
+                                generate_until=plugin_config.generate_until))
 
     if new_entries:
         entries.extend(new_entries)

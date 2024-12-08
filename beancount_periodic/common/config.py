@@ -1,7 +1,9 @@
 import datetime
 import re
 import sys
-from typing import Tuple
+import ast
+from typing import Tuple, Optional
+from dataclasses import dataclass
 
 from . import *
 
@@ -249,3 +251,28 @@ def __print_config_match_result(date_end, date_start, formula, num, step_named, 
     # sys.stderr.write('value: %s\n' % value)
     # sys.stderr.write('formula: %s\n' % ear)
     pass
+
+
+@dataclass
+class PluginConfig:
+    generate_until: Optional[datetime.date] = None
+
+    @staticmethod
+    def from_string(config_str: str) -> 'PluginConfig':
+        ret = PluginConfig()
+
+        if not config_str:
+            return ret
+        config_dict = ast.literal_eval(config_str)
+
+        try:
+            generate_until_str = config_dict.get('generate_until', None)
+            if generate_until_str == 'today':
+                ret.generate_until = datetime.date.today()
+            elif generate_until_str:
+                ret.generate_until = datetime.date.fromisoformat(generate_until_str)
+        except (ValueError, TypeError):
+            raise RuntimeError('Bad "generate_until" value - it must be a valid date, formatted in ISO 8601 (e.g. '
+                               '"2024-12-31") or the literal "today".')
+
+        return ret
