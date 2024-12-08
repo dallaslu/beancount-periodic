@@ -18,7 +18,7 @@ plugin "beancount_periodic.recur"
 ```beancount
 2022-03-31 * "Provider" "Net Fee"
   recur: "1 Year /Monthly"
-  Liababilies:CreditCard:0001    -50 USD
+  Liabilities:CreditCard:0001    -50 USD
   Expenses:Home:CommunicationFee
 ```
 
@@ -26,21 +26,21 @@ Then this plugin will transform the transaction into:
 
 ```beancount
 2022-03-31 * "Provider" "Net Fee Recurring(1/12)"
-  Liababilies:CreditCard:0001    -50 USD
+  Liabilities:CreditCard:0001    -50 USD
   Expenses:Home:CommunicationFee
 
 2022-04-30 * "Provider" "Net Fee Recurring(2/12)"
-  Liababilies:CreditCard:0001    -50 USD
+  Liabilities:CreditCard:0001    -50 USD
   Expenses:Home:CommunicationFee
 
 2022-05-31 * "Provider" "Net Fee Recurring(3/12)"
-  Liababilies:CreditCard:0001    -50 USD
+  Liabilities:CreditCard:0001    -50 USD
   Expenses:Home:CommunicationFee
 
 ;...
 
 2023-02-28 * "Provider" "Net Fee Recurring(12/12)"
-  Liababilies:CreditCard:0001    -50 USD
+  Liabilities:CreditCard:0001    -50 USD
   Expenses:Home:CommunicationFee
 ```
 
@@ -53,7 +53,7 @@ plugin "beancount_periodic.amortize"
 
 ```beancount
 2022-03-31 * "Landlord" "2022-04 Rent"
-  Liababilies:CreditCard:0001    -12000 USD
+  Liabilities:CreditCard:0001    -12000 USD
   Expenses:Home:Rent
     amortize: "1 Year @2022-04-01 /Monthly"
 ```
@@ -62,7 +62,7 @@ Then this plugin will transform the transaction into:
 
 ```beancount
 2022-03-31 * "Landlord" "2022-04 Rent"
-  Liababilies:CreditCard:0001    -12000 USD
+  Liabilities:CreditCard:0001    -12000 USD
   Equity:Amortization:Home:Rent
     amortize: "1 Year @2022-04-01 /Monthly"
 
@@ -94,7 +94,7 @@ plugin "beancount_periodic.depreciate"
 
 ```beancount
 2022-03-31 * "Tesla" "Model X"
-  Liababilies:CreditCard:0001    -200000 USD
+  Liabilities:CreditCard:0001    -200000 USD
   Assets:Car:ModelX
     depreciate: "5 Year /Yearly =80000"
 ```
@@ -103,7 +103,7 @@ Then this plugin will transform the transaction into:
 
 ```beancount
 2022-03-31 * "Tesla" "Model X"
-  Liababilies:CreditCard:0001    -200000 USD
+  Liabilities:CreditCard:0001    -200000 USD
   Assets:Car:ModelX
     depreciate: "5 Year /Yearly =80000"
   
@@ -130,7 +130,7 @@ To change the depreciation expense account, add the `depreciate_account` meta to
   depreciate_account: "Expenses:Car:Value"
 
 2022-03-31 * "Tesla" "Model X"
-  Liababilies:CreditCard:0001    -200000 USD
+  Liabilities:CreditCard:0001    -200000 USD
   Assets:Car:ModelX
     depreciate: "5 Year /Yearly =80000"
 
@@ -191,7 +191,7 @@ If step string ends with `!` means that the amount of every step will be calcula
 
 ```beancount
 2022-01-01 *
-  Liababilies:CreditCard:0001    -365 USD
+  Liabilities:CreditCard:0001    -365 USD
   Expenses:BlaBla
     amortize: "1 Year /Monthly!"
 ```
@@ -200,7 +200,7 @@ Then this plugin will transform the transaction into:
 
 ```beancount
 2022-01-01 *
-  Liababilies:CreditCard:0001    -365 USD
+  Liabilities:CreditCard:0001    -365 USD
   Expenses:BlaBla
     amortize: "1 Year /Monthly!"
 
