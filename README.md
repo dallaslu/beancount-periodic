@@ -143,6 +143,26 @@ To change the depreciation expense account, add the `depreciate_account` meta to
 ; ...
 ```
 
+### Plugin Configuration
+All plugins support the following configuration options, which can be specified in the `plugin` directive:
+```beancount
+plugin "beancount_periodic.recur" "{...}"
+plugin "beancount_periodic.amortize" "{...}"
+plugin "beancount_periodic.depreciate" "{...}"
+```
+
+#### generate_until
+The `generate_until` configuration option prevents the plugin from generating transactions which occur after the given date.
+It supports a ISO 8601 date string or the string literal 'today', which is replaced with today's date.
+
+```beancount
+; the plugin will only generate transactions until today
+plugin "beancount_periodic.amortize" "{'generate_until':'today'}"
+
+; the plugin will only generate transactions up until (including) 2025-01-01
+plugin "beancount_periodic.amortize" "{'generate_until':'2025-01-01'}"
+```
+
 ### Config string in meta
 
 All settings follow the same rules. These are some examples:
