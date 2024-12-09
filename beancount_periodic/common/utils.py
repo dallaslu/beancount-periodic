@@ -1,5 +1,6 @@
 import datetime
 from decimal import Decimal
+from typing import Optional
 
 from beancount.core import data
 
@@ -40,7 +41,8 @@ def select_periodic_posting_groups(entry, meta_name, errors):
 
 
 def build_steps(meta_key, entry, new_postings_config, positive=True,
-                narration_suffix='(% d / % d)'):
+                narration_suffix='(% d / % d)',
+                generate_until: Optional[datetime.date] = None):
     new_entries = []
 
     if len(new_postings_config) == 1:
@@ -71,6 +73,10 @@ def build_steps(meta_key, entry, new_postings_config, positive=True,
         round_remainder = Decimal('0')
         step_num = sum_step_ratio(config)
         for step_i, (step_days, step_ratio) in enumerate(config.steps):
+            # skip all steps that are past the given date
+            if generate_until and start_date > generate_until:
+                break
+
             if step_i < len(config.steps) - 1:
                 if config.equal_amount:
                     step_amount, remainder = round_and_remainder(step_ratio * total / step_num, place_num)
