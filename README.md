@@ -44,6 +44,45 @@ Then this plugin will transform the transaction into:
   Expenses:Home:CommunicationFee
 ```
 
+### `split`
+
+Similar to recur, except instead of just repeating the same transaction
+multiple times, the original transaction is split into multiple, smaller
+transactions that sum up to the same postings as the original.
+
+`main.bean`
+```
+plugin "beancount_periodic.split"
+```
+
+```beancount
+2025-01-01 * "Tax Estimate"
+    split: "Year / Monthly"
+    Liabilities:Tax
+    Expenses:Tax:Income 12000.00 USD
+```
+
+Then this plugin will transform the transaction into:
+
+```beancount
+; The amounts are not simply 1000 USD per month, since some months are longer
+; than others
+2025-01-01 * "Tax Estimate Split(1/12)"
+    Liabilities:Tax -1019.178082191780821917808219 USD
+    Expenses:Tax:Income 1019.178082191780821917808219 USD
+
+2025-02-01 * "Tax Estimate Split(2/12)"
+    Liabilities:Tax -920.5479452054794520547945205 CHF 
+    Expenses:Tax:Income 920.5479452054794520547945205 CHF
+
+;...
+
+2025-12-01 * "Tax Estimate Split(1/12)"
+    Liabilities:Tax -1019.178082191780821917808219 USD
+    Expenses:Tax:Income 1019.178082191780821917808219 USD
+
+```
+
 #### `amortize`
 
 `main.bean`
