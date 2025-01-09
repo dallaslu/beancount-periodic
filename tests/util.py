@@ -49,7 +49,7 @@ def make_transaction(date: datetime.date, payee: str, narration: str, account_fr
             ),
         ],
         meta={'lineno': 0},
-        tags=[],
-        links=[],
+        tags=frozenset(),
+        links=frozenset(),
     )
     return tx
