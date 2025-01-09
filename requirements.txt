@@ -1,2 +1,3 @@
-beancount>=3.0.0
+beancount>=2.3.4
+beangulp>=0.0.1
 python-dateutil~=2.8.2
