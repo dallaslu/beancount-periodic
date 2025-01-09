@@ -291,6 +291,15 @@ The default value of step is 1 day if missing.
 
 The default value of formula is `line`.
 
+- [x] line
+- [] linear
+- [] straight
+- [] load
+- [] work-load
+- [] accelerated-sum
+- [] sum
+- [] accelerated-declining
+
 #### Salvage value
 
 `=80000` means that the salvage value is 80000.
