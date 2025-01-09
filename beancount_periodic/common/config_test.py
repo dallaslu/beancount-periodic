@@ -29,7 +29,7 @@ class MyTestCase(unittest.TestCase):
                                           (7, 1),
                                           (7, 1),
                                           (7, 1),
-                                          (1, 0.14285714285714285)])
+                                          (1, Decimal('0.1428571428571428571428571429'))])
 
     def test_get_duration(self):
         self.assertEqual(get_duration(datetime.datetime.strptime('2021-01-31', '%Y-%m-%d'), 1, 'Months', None), 28)
@@ -41,13 +41,13 @@ class MyTestCase(unittest.TestCase):
 
     def test_get_steps(self):
         self.assertEqual(get_steps(datetime.datetime.strptime('2021-01-31', '%Y-%m-%d'), 10, 1, None, None),
-                         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+                         [(1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1)])
         self.assertEqual(get_steps(datetime.datetime.strptime('2021-01-01', '%Y-%m-%d'), 365, 1, 'Month', None),
-                         [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
+                         [(31, 1), (28, 1), (31, 1), (30, 1), (31, 1), (30, 1), (31, 1), (31, 1), (30, 1), (31, 1), (30, 1), (31, 1)])
         self.assertEqual(get_steps(datetime.datetime.strptime('2020-11-30', '%Y-%m-%d'), 365, 1, 'Month', None),
-                         [30, 31, 29, 30, 31, 30, 31, 30, 31, 31, 30, 31])
+                         [(30, 1), (31, 1), (29, 1), (30, 1), (31, 1), (30, 1), (31, 1), (30, 1), (31, 1), (31, 1), (30, 1), (31, 1)])
         self.assertEqual(get_steps(datetime.datetime.strptime('2020-11-30', '%Y-%m-%d'), 365, 1, 'Month', None),
-                         [30, 31, 29, 30, 31, 30, 31, 30, 31, 31, 30, 31])
+                         [(30, 1), (31, 1), (29, 1), (30, 1), (31, 1), (30, 1), (31, 1), (30, 1), (31, 1), (31, 1), (30, 1), (31, 1)])
 
 
 if __name__ == '__main__':

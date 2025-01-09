@@ -57,29 +57,29 @@ plugin "beancount_periodic.split"
 
 ```beancount
 2025-01-01 * "Tax Estimate"
-    split: "Year / Monthly"
-    Liabilities:Tax
-    Expenses:Tax:Income 12000.00 USD
+  split: "Year / Monthly"
+  Liabilities:Tax
+  Expenses:Tax:Income 4380.00 USD; 365*12
 ```
 
 Then this plugin will transform the transaction into:
 
 ```beancount
-; The amounts are not simply 1000 USD per month, since some months are longer
+; The amounts are not simply 365 USD per month, since some months are longer
 ; than others
 2025-01-01 * "Tax Estimate Split(1/12)"
-    Liabilities:Tax -1019.178082191780821917808219 USD
-    Expenses:Tax:Income 1019.178082191780821917808219 USD
+  Liabilities:Tax -372 USD
+  Expenses:Tax:Income 372 USD
 
 2025-02-01 * "Tax Estimate Split(2/12)"
-    Liabilities:Tax -920.5479452054794520547945205 CHF 
-    Expenses:Tax:Income 920.5479452054794520547945205 CHF
+  Liabilities:Tax -336 USD 
+  Expenses:Tax:Income 336 USD
 
 ;...
 
 2025-12-01 * "Tax Estimate Split(1/12)"
-    Liabilities:Tax -1019.178082191780821917808219 USD
-    Expenses:Tax:Income 1019.178082191780821917808219 USD
+  Liabilities:Tax -372 USD
+  Expenses:Tax:Income 372 USD
 
 ```
 
@@ -186,6 +186,7 @@ To change the depreciation expense account, add the `depreciate_account` meta to
 All plugins support the following configuration options, which can be specified in the `plugin` directive:
 ```beancount
 plugin "beancount_periodic.recur" "{...}"
+plugin "beancount_periodic.split" "{...}"
 plugin "beancount_periodic.amortize" "{...}"
 plugin "beancount_periodic.depreciate" "{...}"
 ```
