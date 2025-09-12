@@ -182,6 +182,42 @@ To change the depreciation expense account, add the `depreciate_account` meta to
 ; ...
 ```
 
+To change the depreciation asset (credit) account, add the `depreciate_asset_account` meta to the `open` statement of the depreciated asset account:
+```beancount
+1900-01-01 open Assets:Car:ModelX  EUR
+  depreciate_asset_account: "Assets:Accumulated-Depreciation:Car:ModelX"
+
+2022-03-31 * "Tesla" "Model X"
+  Liabilities:CreditCard:0001    -200000 USD
+  Assets:Car:ModelX
+    depreciate: "5 Year /Yearly =80000"
+
+
+; generated transation
+2022-03-31 * "Tesla" "Model X Depreciated(1/5)"
+  Assets:Accumulated-Depreciation:Car:ModelX    -24000 USD
+  Expenses:Depreciation:Car:ModelX
+
+; ...
+```
+
+Alternatively, specify it on the transaction posting with the `depreciate_asset_account` meta:
+```beancount
+2022-03-31 * "Tesla" "Model X"
+  Liabilities:CreditCard:0001    -200000 USD
+  Assets:Car:ModelX
+    depreciate: "5 Year /Yearly =80000"
+    depreciate_asset_account: "Assets:Accumulated-Depreciation:Car:ModelX"
+
+
+; generated transation
+2022-03-31 * "Tesla" "Model X Depreciated(1/5)"
+  Assets:Accumulated-Depreciation:Car:ModelX    -24000 USD
+  Expenses:Depreciation:Car:ModelX
+
+; ...
+```
+
 ### Plugin Configuration
 All plugins support the following configuration options, which can be specified in the `plugin` directive:
 ```beancount
