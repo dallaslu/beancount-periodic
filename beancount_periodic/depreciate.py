@@ -31,6 +31,28 @@ def get_depreciation_account(
     return new_account
 
 
+def get_depreciation_asset_account(
+        accounts_open_close: Dict[str, Tuple[data.Open, data.Close]],
+        asset_account: str,
+        posting: data.Posting,
+) -> str:
+    # 1) Posting-level override
+    if posting.meta:
+        acct_override = posting.meta.get('depreciate_asset_account')
+        if acct_override:
+            return acct_override
+
+    # 2) Account-level override (Open directive)
+    oc = accounts_open_close.get(asset_account)
+    if oc and oc[0] and oc[0].meta:
+        acct_open_meta = oc[0].meta
+        acct_override = acct_open_meta.get('depreciate_asset_account')
+        if acct_override:
+            return acct_override
+
+    # 3) Default: original asset account
+    return asset_account
+
 def depreciate(entries: data.Entries, unused_options_map, config_string=""):
     plugin_config = PluginConfig.from_string(config_string)
     new_entries = []
@@ -50,9 +72,25 @@ def depreciate(entries: data.Entries, unused_options_map, config_string=""):
                             account_types_option.expenses,
                             posting.account
                         )
+                        asset_side_account = get_depreciation_asset_account(
+                            accounts_open_close,
+                            posting.account,
+                            posting
+                        )
+
+                        if not account_types.is_account_type(account_types_option.assets, asset_side_account):
+                            errors.append((
+                                'depreciate',
+                                f"Invalid depreciate_asset_account '{asset_side_account}' "
+                                f"for posting on line {posting.meta.get('lineno') if posting.meta else 'unknown'}; "
+                                "must be an Assets account. Falling back to the original asset account."
+                            ))
+                            asset_side_account = posting.account
+
                     else:
                         continue
-                    new_postings_config.append((config, posting, new_account))
+                    modified_posting = posting._replace(account=asset_side_account)
+                    new_postings_config.append((config, modified_posting, new_account))
 
                 new_entries.extend(
                     build_steps('depreciate', entry, new_postings_config,
