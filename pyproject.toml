@@ -1,3 +1,33 @@
 [build-system]
-requires = ["setuptools>=61", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "beancount-periodic"
+version = "0.2.1"
+description = "Beancount plugin to generate periodic transactions #Amortize #Depreciate #Recur"
+readme = "README.md"
+requires-python = ">=3.6"
+license = "Unlicense"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Dallas Lu", email = "914202+dallaslu@users.noreply.github.com" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Office/Business :: Financial :: Accounting",
+]
+dependencies = [
+    "beancount>=2.3.4",
+    "beangulp>=0.1.1",
+    "python-dateutil~=2.9.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+dev = ["beancount-periodic[test]", "build", "twine"]
+
+[project.urls]
+homepage = "https://github.com/dallaslu/beancount-periodic"
+tracker = "https://github.com/dallaslu/beancount-periodic/issues"
